@@ -70,6 +70,11 @@ class UpdateService:
     INTERVAL=300
     def __init__(self,base,fetch=powershell_fetch):
         self.base=Path(base);self.fetch=fetch;self.offer=None;self.package=None
+        try:
+            self.current_version=(self.base/'VERSION').read_text(encoding='utf8').strip()
+            version(self.current_version)
+        except (OSError,ValueError):self.current_version='확인 불가'
+        self.version_label='현재 버전 '+self.current_version
         self.status='확인 전';self.busy=False;self.install_requested=False
         self.next_check=time.monotonic()+15;self._lock=threading.Lock()
         self._idle_result=False;self._idle_at=0;self._idle_checking=False;self.manual_requested=False;self.prepared=False
@@ -160,6 +165,7 @@ def launch_worker(base,package,offer,wait_pid,tray_only=False):
 def update_menu_items(service,back):
     return [
         ('뒤로',back,False,True,{'icon':'back'}),None,
+        ('업데이트 상태',None,False,True,{'section':True,'value':service.status}),
         ('새 버전 확인',service.check,False,True,{'icon':'clock','disabled':service.busy or not service.enabled}),
         ('지금 업데이트',service.request_install,False,False,{'icon':'open','disabled':service.busy or not service.offer or not service.enabled}),
         None,

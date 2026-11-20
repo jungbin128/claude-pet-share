@@ -223,7 +223,7 @@ def run(automatic=False,source="claude",fresh=False,tray_only=False):
         def open_updates():
             popup.navigate(lambda:update_menu_items(updates,
                 lambda:popup.navigate(items,"Claude Pet","트레이 및 실행 설정")),
-                "업데이트",updates.status)
+                "업데이트",updates.version_label)
         def items():return tray_menu_items(ctl,action,open_autorun,open_updates,
             updates.offer['version'] if updates.offer else "")
         point=w.POINT();u.GetCursorPos(c.byref(point));u.SetForegroundWindow(hwnd)
@@ -269,7 +269,7 @@ def run(automatic=False,source="claude",fresh=False,tray_only=False):
                         token=(updates.status,updates.auto,updates.busy,is_suspended(BASE),get_mode(BASE))
                         if popup.open_ and token!=ui_token:
                             popup.items=popup.builder()
-                            if popup.heading=="업데이트":popup.caption=updates.status
+                            if popup.heading=="업데이트":popup.caption=updates.version_label
                             popup.render();ui_token=token
                         menu_ui[0].update()
                     finally:updating_ui=False

@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "2.0.1",
+  "version": "2.0.2",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "86777975183671b9892a015c0b0c6e5430efb1beabf3f295ff982533a2a4694f",
+    "CHANGELOG.md": "48b7f056893866104b07c557b7fd26220ff170571ac5aa366ba30f509ce725d3",
     "CLAUDE_INSTALL.md": "e9f5a171f4ea1e526f44a5c022d5ee4d338f380a2daffd385fa078925d06e937",
     "PRIVACY.md": "3ebb1e90e8635aeac06c2df9fd44b47b3b12e981e60f6a921aab1e721c958540",
     "README.md": "e887e9bb7b333ab4f1d4c26ee9d639bf6ae4d7bebe2761485efd9e3087770141",
     "Start Pet.cmd": "14873aa4f9f34a75fe5b62d2c866dec65b0cd33949e5b26d1cc986c32686e669",
-    "VERSION": "5ec59dc9b30e1df8e3fdae5adc45cd70b414740556237e9c80a9052f88b2d2fe",
+    "VERSION": "8f74f4a02b9f7e225a14ea2a775d0c0ae6e7a683a546e7ecb50af3823f5d6fcc",
     "app_launch.py": "9340324c17362a7d6cb316eb68c081cb8360e04207d86e2ccb825df5a4cdd506",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
@@ -57,10 +57,10 @@
     "skins/cinder/working_1.png": "f5ac44e4c6af22b5b9d427fb0094e986bb0f2363e8d61110c72c8fef189b2c91",
     "text_behind.ps1": "33edb9d28cd64ae8a9e985f695fdffea95cfc050ee88922b82700119636be759",
     "text_behind.py": "bf9182903b66dc42ef91d0f7e1c956d52beb2d57b9394e1eacebb9ed19628a94",
-    "tray_host.py": "cebcd0a6778a32c4f75d51f7c7f45daaf491c984fc3aa79ddb20d2c315370cd5",
+    "tray_host.py": "623919efdd943bf9030944a7e5b11973e6739901f8098b415ed17a265d2395c4",
     "uninstall.py": "e2ec04a4b011b92980e4f2a0b96653646ebcd99a575acd01a5c2811c50bd4e68",
     "update_worker.py": "f8ec7a5be1eb52272168099e66f8f905602e26ee503342654c758d72e8a12dc4",
-    "updater.py": "3086a20bd16b99dd73a1ed991b806b621eaec3a81e684fe12e4a0c474caf7f9c",
+    "updater.py": "7abde78ad69f08fdd690652d8faa521344d07c1d5e28a2ef1d6073a2818b19c2",
     "usage_sync.ps1": "f43e7c135486f5b3395d0eafac1e44216084ca36ac9db09c791d2c7a700beead",
     "watchers.py": "e83332eee99fe01c139047522bc5125ef787955370a543488fdae402656b5758"
   }
