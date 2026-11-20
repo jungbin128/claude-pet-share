@@ -2,6 +2,13 @@
 
 버전은 `주 버전.기능 버전.수정 버전` 형식입니다. 한 번의 배포에 여러 기능이 들어가도 기능 버전은 한 번 올립니다. 기능 추가와 수정이 함께 있으면 기능 버전을 올리고 수정 버전은 0으로 시작합니다. 자세한 규칙은 [버전 관리](docs/VERSIONING.md)를 따릅니다.
 
+## [2.1.0] - 2026-11-20
+
+- Add Tokito Muichiro (menu name `무이치로`) as the third selectable pet, with seated idle/wait poses and standing work, hover and completion reactions.
+- Rename the Charmander (파이리) skin ID, folder and preview assets; existing saved skin selections migrate automatically.
+- Include only the two official skins in public packages; unrelated user skins and all personal runtime data remain excluded.
+- Validation: 25 skin, distribution and version tests passed. Full Linux discovery ran 140 tests with 6 Windows API setup errors and 1 Windows OCR skip; GUI, tray, IME and monitor behavior require Windows validation.
+
 ## [2.0.2] - 2026-11-20
 
 - 업데이트 화면 상단에 현재 설치 버전을 고정 표시하고 업데이트 상태를 별도 행으로 분리
@@ -11,7 +18,7 @@
 - 단일 펫 표시의 이동 경로에 누락된 화면 경계 제한 추가. 모든 화면 표시 여부와 무관하게 본체 전체와 하단 막대가 작업 영역 안에 유지.
 - 고정 좌표 여백 대신 선택한 스킨·크기·DPI의 실제 좌우·상하 크기로 경계 계산. 다중 화면도 같은 계산을 사용하고 정수 반올림에 의한 경계 누출 방지.
 - 화면 가장자리에서 크기·스킨을 바꾸거나 저장 위치가 잘못된 경우에도 표시 전 위치 보정·기억. 다른 연결 모니터로의 이동은 유지.
-- 검증: 회귀 테스트 174개 통과. 단일/다중 화면, 음수 좌표, 작업표시줄 영역, 100/150/200% 배율과 실제 로봇·Cinder 크기별 경계 확인.
+- 검증: 회귀 테스트 174개 통과. 단일/다중 화면, 음수 좌표, 작업표시줄 영역, 100/150/200% 배율과 실제 로봇·Charmander 크기별 경계 확인.
 
 ## [2.0.0] - 2026-11-20
 
@@ -65,7 +72,7 @@
 
 ### 추가
 
-- 불씨 Cinder 애니메이션 스킨: 64×72 투명 PNG 16장과 장면별 프레임 재생.
+- Charmander(파이리) 애니메이션 스킨: 64×72 투명 PNG 16장과 장면별 프레임 재생.
 - 스킨 로더와 작업·대기·호버·완료 장면 선택, 눈 깜빡임·대체 프레임 지원.
 - 모든 펫 공통 시그니처 불빛, 움직이는 화염 고리 효과.
 - 스킨 제작·인계 문서, 미리보기와 기본 회귀 테스트.
@@ -89,3 +96,4 @@
 [2.0.0]: https://github.com/jungbin128/claude-pet/compare/1.3.0...2.0.0
 [2.0.1]: https://github.com/jungbin128/claude-pet/compare/2.0.0...2.0.1
 [2.0.2]: https://github.com/jungbin128/claude-pet/compare/2.0.1...2.0.2
+[2.1.0]: https://github.com/jungbin128/claude-pet/compare/2.0.2...2.1.0

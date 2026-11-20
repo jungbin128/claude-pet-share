@@ -1,0 +1,22 @@
+{
+  "name": "무이치로",
+  "light": [33, 46],
+  "fps": {
+    "idle": 3,
+    "working": 4,
+    "waiting": 3,
+    "hover": 8,
+    "celebrate": 8
+  },
+  "preserve_canvas": true,
+  "effects": {
+    "fire_rings": false,
+    "flame_shadow": false
+  },
+  "light_colors": {
+    "idle": [85, 210, 205],
+    "working": [40, 190, 255],
+    "waiting": [255, 190, 55],
+    "done": [105, 235, 180]
+  }
+}

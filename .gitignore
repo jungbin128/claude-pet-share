@@ -16,4 +16,5 @@ _send_*.txt
 .uninstalling
 .update-in-progress
 skins/*
-!skins/cinder/
+!skins/charmander/
+!skins/tokito_muichiro/

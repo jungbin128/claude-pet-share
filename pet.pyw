@@ -331,7 +331,15 @@ def trunc(text, fnt, maxw):
 def load_conf():
     try:
         with open(CONF_FILE, encoding="utf-8") as f:
-            return json.load(f)
+            conf = json.load(f)
+        if isinstance(conf, dict):
+            # Keep existing users' selected skin when its public ID changes.
+            aliases = {"cinder": "charmander", "muichiro": "tokito_muichiro"}
+            skin = conf.get("skin")
+            if isinstance(skin, str) and skin in aliases:
+                conf["skin"] = aliases[skin]
+                save_conf(conf)
+        return conf
     except Exception:
         return {}
 
