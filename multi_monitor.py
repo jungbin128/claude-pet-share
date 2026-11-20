@@ -2,6 +2,7 @@
 from types import SimpleNamespace
 import tkinter as tk
 import time
+import math
 
 
 def corresponding_center(point, source, target):
@@ -12,16 +13,38 @@ def corresponding_center(point, source, target):
             round(c + (y-t) / max(1, b-t) * (e-c))]
 
 
+def edge_margins(margins):
+    if len(margins)==2:return margins[0],margins[1],margins[0],margins[1]
+    if len(margins)!=4:raise ValueError("Expected left/top/right/bottom margins")
+    return tuple(margins)
+
+
+def bounded_axis(value,start,end,before,after):
+    lower,upper=math.ceil(start+before),math.floor(end-after)
+    # If a huge pet cannot fit, keep its center on-screen without oscillating.
+    if lower>upper:return round((start+end)/2)
+    return min(upper,max(lower,round(value)))
+
+
+def clamp_center(point,area,margins):
+    left,top,right,bottom=edge_margins(margins)
+    return [bounded_axis(point[0],area[0],area[2],left,right),
+            bounded_axis(point[1],area[1],area[3],top,bottom)]
+
+
 def shared_drag(point, dx, dy, source, anchor, areas, margins=(40, 60)):
-    """Cursor motion on any monitor maps to the same relative displacement."""
-    l, t, r, b = anchor
-    sw, sh = max(1, source[2]-source[0]), max(1, source[3]-source[1])
-    fx = (point[0]-l) / max(1, r-l) + dx/sw
-    fy = (point[1]-t) / max(1, b-t) + dy/sh
-    mx = min(.49, max(margins[0]/max(1, a[2]-a[0]) for a in areas))
-    my = min(.49, max(margins[1]/max(1, a[3]-a[1]) for a in areas))
-    return [round(l + min(1-mx, max(mx, fx))*(r-l)),
-            round(t + min(1-my, max(my, fy))*(b-t))]
+    """Map motion while keeping the complete pet inside every monitor work area."""
+    l,t,r,b=anchor;aw,ah=max(1,r-l),max(1,b-t)
+    sw,sh=max(1,source[2]-source[0]),max(1,source[3]-source[1])
+    fx=(point[0]-l)/aw+dx/sw;fy=(point[1]-t)/ah+dy/sh
+    left,top,right,bottom=edge_margins(margins)
+    areas=areas or [anchor]
+    xmin=max(left/max(1,a[2]-a[0]) for a in areas)
+    xmax=min(1-right/max(1,a[2]-a[0]) for a in areas)
+    ymin=max(top/max(1,a[3]-a[1]) for a in areas)
+    ymax=min(1-bottom/max(1,a[3]-a[1]) for a in areas)
+    return [bounded_axis(l+fx*aw,l,r,xmin*aw,(1-xmax)*aw),
+            bounded_axis(t+fy*ah,t,b,ymin*ah,(1-ymax)*ah)]
 
 
 class MirroredPets:
@@ -70,11 +93,17 @@ class MirroredPets:
             self._next_scan = now + 2
         areas = self.areas
         anchor = self.work_area(self.app.pc)
-        if not (anchor[0] <= self.app.pc[0] < anchor[2] and anchor[1] <= self.app.pc[1] < anchor[3]):
-            self.app.pc = [min(max(self.app.pc[0], anchor[0]+40), anchor[2]-40),
-                           min(max(self.app.pc[1], anchor[1]+60), anchor[3]-40)]
+        if self.app.conf.get("all_monitors",False):
+            corrected=shared_drag(self.app.pc,0,0,anchor,anchor,areas or [anchor],self.pet_margins())
+        else:
+            corrected=clamp_center(self.app.pc,anchor,self.pet_margins())
+        position_changed=corrected!=list(self.app.pc)
+        if position_changed:
+            self.app.pc=corrected
             self.app.geom()
-            self.app._frame_key = None
+            self.app._frame_key=None
+            callback=getattr(self.app,"on_position_clamped",None)
+            if callback:callback()
         enabled = self.app.conf.get("all_monitors", False)
         desired = set(areas) - {anchor} if enabled else set()
         topology = (tuple(areas), anchor, enabled)
@@ -90,15 +119,21 @@ class MirroredPets:
                 win.attributes("-topmost", True)
                 win.geometry("1x1+-32000+-32000")
                 self.mirrors[area] = self.make_view(win, self.layered(win))
-        return changed
+        return changed or position_changed
+
+    def pet_margins(self):
+        margins=getattr(self.app,"pet_margins",None)
+        if margins is not None:return margins
+        return (self.scale(self.app.pw+4),self.scale(max(self.app.ptop,50)+4))
 
     def drag_center(self, point, dx, dy):
         if not self.app.conf.get("all_monitors", False):
-            return [point[0]+dx, point[1]+dy]
+            proposed=[point[0]+dx,point[1]+dy]
+            return clamp_center(proposed,self.work_area(proposed),self.pet_margins())
         anchor = self.work_area(point)
         return shared_drag(point, dx, dy, self.app._drag_source_area, anchor,
                            self.areas or [anchor],
-                           (self.scale(self.app.pw+4), self.scale(max(self.app.ptop, 50)+4)))
+                           self.pet_margins())
 
     def present(self, image=None, moving=False, images=None):
         if images is not None:

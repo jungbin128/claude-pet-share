@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "2.0.0",
+  "version": "2.0.1",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "62ad3c2c23bf00b3222eb632614f18b55ae7156e40fe5dd18cb578773f7657d4",
+    "CHANGELOG.md": "86777975183671b9892a015c0b0c6e5430efb1beabf3f295ff982533a2a4694f",
     "CLAUDE_INSTALL.md": "e9f5a171f4ea1e526f44a5c022d5ee4d338f380a2daffd385fa078925d06e937",
     "PRIVACY.md": "3ebb1e90e8635aeac06c2df9fd44b47b3b12e981e60f6a921aab1e721c958540",
     "README.md": "e887e9bb7b333ab4f1d4c26ee9d639bf6ae4d7bebe2761485efd9e3087770141",
     "Start Pet.cmd": "14873aa4f9f34a75fe5b62d2c866dec65b0cd33949e5b26d1cc986c32686e669",
-    "VERSION": "efdfae9d0dc9b09f9524df6c401bf7143a882469c6243bfbcb0bbeaefe9aa3c1",
+    "VERSION": "5ec59dc9b30e1df8e3fdae5adc45cd70b414740556237e9c80a9052f88b2d2fe",
     "app_launch.py": "9340324c17362a7d6cb316eb68c081cb8360e04207d86e2ccb825df5a4cdd506",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
@@ -28,9 +28,9 @@
     "imagepet.py": "3fc503ef3b91a2a65c5e1bfc83bb09598023621b2aa98adfd5dff8095ce88419",
     "install.py": "67b5427bea0b4fd40803a0fe4bd73ff379486930da7905c65cbab90a25b98ac1",
     "integration.py": "3833b7e638a5d577d023cb94c12af996499936e44126f2d6c325d909395137a9",
-    "multi_monitor.py": "a22018003e25372678ab695df133c4915d79184a0ae73129b9d6f654895a4877",
+    "multi_monitor.py": "cde679bf5397968d723193a7a2a83df08ac10deb7dd33aa8e86417981fd70373",
     "ocr_text_behind.ps1": "b605c87d2e0a634ff575d3c03f7728fb2334f9b575b7580428e2b45593e0af29",
-    "pet.pyw": "810288b7101c436488972d20c602e9b3d79da94794330c62266d859e08548086",
+    "pet.pyw": "d99cb585d3cc817ddcc6507b0ffc375f018f32937fc2d780d94eb4c1d1678583",
     "pet_hook.py": "f7bbd92323de8bc09cbe713b0746dfbb565aed2c6e1c32320ac75294ca2cf6b2",
     "pixel_finish.py": "24fd66b76c5619dd2f76e7347b559e0bcfd6193cbece4782f36153bcee0c5641",
     "pixelpet.py": "18d8f4c8252dc4f3dad8e5a5e5fab3923c8398930a7d4d4158b9448afde5ec31",

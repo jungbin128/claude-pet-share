@@ -1738,6 +1738,8 @@ class Pet:
         gx, gy = pixelpet.center()
         u = f / SCALE                                   # 한 칸의 논리 크기
         self.spr_off = (gx * u, gy * u)                 # 스프라이트 왼쪽 위 → 몸통 중심
+        self.pet_margins=(S(gx*u+4),S(gy*u+4),
+                          S((pixelpet.GW-gx)*u+4),S((pixelpet.GH-gy)*u+10))
         self.pw = max(gx, pixelpet.GW - gx) * u
         self.ptop = gy * u
         self.pbot = (pixelpet.GH - gy) * u + 12 + self.PANEL_H + 4
@@ -1770,6 +1772,10 @@ class Pet:
         self._bar_offset = self.petbar_y - cy
         self._layout_signature = None
         self._layout_request = None
+
+    def on_position_clamped(self):
+        self.conf["pc"]=list(self.pc)
+        if not self._drag:save_conf(self.conf)
 
     def overlay_layout(self):
         """Use the intersection of every displayed monitor's visible pet-relative area."""
