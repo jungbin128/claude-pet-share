@@ -1,0 +1,47 @@
+{
+  "name": "파이리",
+  "light": [
+    52,
+    33
+  ],
+  "fps": {
+    "idle": 3,
+    "working": 4,
+    "waiting": 3,
+    "hover": 8,
+    "celebrate": 8
+  },
+  "preserve_canvas": true,
+  "effects": {
+    "fire_rings": true,
+    "flame_shadow": false
+  },
+  "light_colors": {
+    "idle": [
+      255,
+      115,
+      28
+    ],
+    "working": [
+      30,
+      150,
+      255
+    ],
+    "waiting": [
+      255,
+      160,
+      15
+    ],
+    "done": [
+      40,
+      195,
+      100
+    ]
+  },
+  "render_style": {
+    "flame_gradient": true,
+    "outline": "thin",
+    "flame_outline": true,
+    "clean_outline": true
+  }
+}
