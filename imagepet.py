@@ -147,6 +147,10 @@ class ImageSkin:
         self.name = name
         folder = os.path.join(SKIN_DIR, name)
         conf = _read_conf(name)
+        self.pixel_density = float(conf.get("pixel_density", 1.0))
+        if not 0.25 <= self.pixel_density <= 4.0:
+            raise ValueError("pixel_density must be between 0.25 and 4")
+        self.render_scale = 1.0 / self.pixel_density
         self.fire_rings = bool((conf.get("effects") or {}).get("fire_rings"))
         self.flame_shadow = bool((conf.get("effects") or {}).get("flame_shadow"))
         self._flame_shadows = {}
@@ -197,8 +201,9 @@ class ImageSkin:
         else:
             found = _find_light(self.sprite)
             lx, ly = found if found else (gw / 2, 0)
-        self.GW, self.GH = gw + 2 * PAD_X, gh + PAD_TOP + PAD_BOT
-        self.OX, self.OY = PAD_X, PAD_TOP
+        pad_x, pad_top, pad_bot = (round(v * self.pixel_density) for v in (PAD_X, PAD_TOP, PAD_BOT))
+        self.GW, self.GH = gw + 2 * pad_x, gh + pad_top + pad_bot
+        self.OX, self.OY = pad_x, pad_top
         self.light = (self.OX + lx + 0.5, self.OY + ly + 0.5)
         self.PAL = {"bulb": dict(LIGHTS, **{k: tuple(v) for k, v in (conf.get("light_colors") or {}).items()})}
 
@@ -241,19 +246,23 @@ class ImageSkin:
         ly = self.light[1] - self.OY - 0.5
         mask = Image.new("L", spr.size, 0)
         src, dst = spr.load(), mask.load()
-        for y in range(max(0, int(ly - 13)), min(spr.height, int(ly + 10))):
-            for x in range(max(0, int(lx - 8)), min(spr.width, int(lx + 8))):
+        reach_y = self.pixel_density
+        reach_x = self.pixel_density
+        for y in range(max(0, int(ly - 13 * reach_y)), min(spr.height, int(ly + 10 * reach_y))):
+            for x in range(max(0, int(lx - 8 * reach_x)), min(spr.width, int(lx + 8 * reach_x))):
                 r, g, b, a = src[x, y]
                 if a and r > 160 and g > 65 and r > b * 1.3:
                     dst[x, y] = min(150, a)
         full_mask = Image.new("L", (self.GW, self.GH), 0)
-        full_mask.paste(mask, (self.OX + 2, self.OY + 3))
+        full_mask.paste(mask, (self.OX + round(2 * self.pixel_density), self.OY + round(3 * self.pixel_density)))
         shadow = Image.new("RGBA", full_mask.size, (24, 15, 12, 0))
-        shadow.putalpha(full_mask.filter(ImageFilter.GaussianBlur(1.35)))
+        shadow.putalpha(full_mask.filter(ImageFilter.GaussianBlur(1.35 * self.pixel_density)))
         self._flame_shadows[key] = shadow
         return shadow
 
     def draw(self, state="idle", eyes="open", arms="down", bob=0, badge=False, stars=(), wave=0, tick=0, frame=None, fx_phase=None, **_):
+        density = self.pixel_density
+        bob = round(bob * density)
         img = Image.new("RGBA", (self.GW, self.GH), (0, 0, 0, 0))
         spr = self._pick(state, eyes, arms, badge, stars, tick, frame)
         if self.flame_shadow:
@@ -265,21 +274,23 @@ class ImageSkin:
                                            phase, state)
             img.alpha_composite(back, (0, -bob))
         own_motion = len(self.frames.get("hover", ())) > 1   # 손 흔들기 프레임이 있으면 그림을 흔들지 않음
-        img.alpha_composite(spr, (self.OX + (1 if wave and not own_motion else 0), self.OY - bob))
+        img.alpha_composite(spr, (self.OX + (round(density) if wave and not own_motion else 0), self.OY - bob))
         if self.fire_rings:
             img.alpha_composite(front, (0, -bob))
         d = ImageDraw.Draw(img)
         if badge:   # 느낌표 (그림 오른쪽 위)
-            x0, y0 = self.GW - 11, max(0, self.OY - 10 - bob)
-            d.rectangle([x0, y0, x0 + 9, y0 + 12], fill=(60, 40, 30, 255))
-            d.rectangle([x0 + 1, y0 + 1, x0 + 8, y0 + 11], fill=(255, 166, 32, 255))
-            d.rectangle([x0 + 4, y0 + 3, x0 + 5, y0 + 7], fill=(255, 255, 255, 255))
-            d.rectangle([x0 + 4, y0 + 9, x0 + 5, y0 + 10], fill=(255, 255, 255, 255))
+            s = round
+            x0, y0 = self.GW - s(11 * density), max(0, self.OY - s(10 * density) - bob)
+            d.rectangle([x0, y0, x0 + s(9 * density), y0 + s(12 * density)], fill=(60, 40, 30, 255))
+            d.rectangle([x0 + s(density), y0 + s(density), x0 + s(8 * density), y0 + s(11 * density)], fill=(255, 166, 32, 255))
+            d.rectangle([x0 + s(4 * density), y0 + s(3 * density), x0 + s(5 * density), y0 + s(7 * density)], fill=(255, 255, 255, 255))
+            d.rectangle([x0 + s(4 * density), y0 + s(9 * density), x0 + s(5 * density), y0 + s(10 * density)], fill=(255, 255, 255, 255))
         spots = ((2, 6), (self.GW - 3, 4), (1, self.GH * 0.6), (self.GW - 2, self.GH * 0.65))
         for (x, y), on in zip(spots, stars):
             if on:
                 x, y = int(x), int(y)
                 for i in (1, 2, 3):
+                    i = round(i * density)
                     for p in ((x, y - i), (x, y + i), (x - i, y), (x + i, y)):
                         d.point(p, fill=(255, 214, 64, 255))
                 d.point((x, y), fill=(255, 255, 255, 255))

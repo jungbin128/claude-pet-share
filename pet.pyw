@@ -1741,7 +1741,7 @@ class Pet:
 
     # ---- 배치 ----
     def geom(self):
-        f = self.pix * SCALE           # 픽셀 한 칸 = f 화면 픽셀
+        f = self.pix * SCALE * getattr(pixelpet, "render_scale", 1.0)
         self.f = f
         gx, gy = pixelpet.center()
         u = f / SCALE                                   # 한 칸의 논리 크기
@@ -2606,7 +2606,9 @@ class Pet:
                 fx.oval(x, y - 0.35, r - 1.3, r - 1.5, rgba(C["bubble_top"],alpha))
         # 바닥 그림자
         u = self.f / SCALE
-        fx.oval(cx0, cy0 + (pixelpet.GH - pixelpet.center()[1] - 9) * u, 24 * u, 3 * u, (0, 0, 20, 70))
+        density = getattr(pixelpet, "pixel_density", 1.0)
+        fx.oval(cx0, cy0 + (pixelpet.GH - pixelpet.center()[1] - 9 * density) * u,
+                24 * u * density, 3 * u * density, (0, 0, 20, 70))
         # 펫 밑 흰 막대 (여기에 올리면 판이 열림)
         draw_bar(fx, cx0, self.petbar_y, tb)
         if tb:  # 판: 새 대화 버튼 + 사용량
@@ -2732,13 +2734,14 @@ class Pet:
         img = self.static_layers(placed, tb)
         cx0, cy0 = self.cx, self.cy
         u = self.f / SCALE
+        density = getattr(pixelpet, "pixel_density", 1.0)
         # 안테나 전구 불빛 (흐리게 번진 빛만, 픽셀 펫 뒤) — 전구 주변 작은 영역만 흐리게
         if glow > 0:
             bulb = pixelpet.PAL["bulb"][st]
             gx_, gy_ = pixelpet.center()
             bcx, bcy = pixelpet.bulb_center()
-            bx_, by_ = S(cx0 + (bcx - gx_) * u), S(cy0 + (bcy - bob - gy_) * u)
-            r_, blur = S(9 * u * rk), S(4.4 * u * rk)
+            bx_, by_ = S(cx0 + (bcx - gx_) * u), S(cy0 + (bcy - bob * density - gy_) * u)
+            r_, blur = S(9 * u * density * rk), S(4.4 * u * density * rk)
             gl, pad = signature_halo(tuple(bulb), r_, blur, glow)
             img.alpha_composite(gl, (bx_ - pad, by_ - pad))
         img.alpha_composite(self._static[2])

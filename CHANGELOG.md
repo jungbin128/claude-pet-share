@@ -2,6 +2,10 @@
 
 버전은 `주 버전.기능 버전.수정 버전` 형식입니다. 한 번의 배포에 여러 기능이 들어가도 기능 버전은 한 번 올립니다. 기능 추가와 수정이 함께 있으면 기능 버전을 올리고 수정 버전은 0으로 시작합니다. 자세한 규칙은 [버전 관리](docs/VERSIONING.md)를 따릅니다.
 
+## [2.1.1] - 2026-11-20
+
+- 무이치로 스킨을 2배 픽셀 밀도로 개선하고 표시 크기를 유지하며, 뒷머리의 땋은 듯한 가닥을 자연스럽게 정리
+
 ## [2.1.0] - 2026-11-20
 
 - Add Tokito Muichiro (menu name `무이치로`) as the third selectable pet, with seated idle/wait poses and standing work, hover and completion reactions.
@@ -97,3 +101,4 @@
 [2.0.1]: https://github.com/jungbin128/claude-pet/compare/2.0.0...2.0.1
 [2.0.2]: https://github.com/jungbin128/claude-pet/compare/2.0.1...2.0.2
 [2.1.0]: https://github.com/jungbin128/claude-pet/compare/2.0.2...2.1.0
+[2.1.1]: https://github.com/jungbin128/claude-pet/compare/2.1.0...2.1.1

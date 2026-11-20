@@ -1,6 +1,8 @@
 {
   "name": "무이치로",
-  "light": [33, 46],
+  "cell": 1,
+  "light": [66, 92],
+  "pixel_density": 2,
   "fps": {
     "idle": 3,
     "working": 4,
