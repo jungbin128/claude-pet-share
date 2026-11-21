@@ -1059,7 +1059,7 @@ def pet_sprite(st, eyes, arms, bob, badge, stars, wave, f, skin_key=None, anim=(
     _ = skin_key
     spr = spr.resize((max(1, round(spr.width * f)), max(1, round(spr.height * f))), Image.NEAREST)
     if isinstance(pixelpet, imagepet.ImageSkin) and pixelpet.nameplate:
-        pixelpet.draw_nameplate(spr, f, bob=bob, wave=wave)
+        pixelpet.draw_nameplate(spr, f, bob=bob, wave=wave, frame=dict(anim).get("frame"))
     return spr
 
 

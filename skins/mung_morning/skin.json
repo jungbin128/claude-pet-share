@@ -26,6 +26,12 @@
     "inset": 5,
     "font_size": 10,
     "bitmap": "assets/fonts/mung_morning_label.png",
+    "frame_offsets": {
+      "hover": [
+        0,
+        -36
+      ]
+    },
     "text_offset_y": 1,
     "pixel_threshold": 45
   },

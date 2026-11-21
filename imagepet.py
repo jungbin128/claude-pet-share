@@ -236,8 +236,8 @@ class ImageSkin:
     def effect_token(self, elapsed):
         return int(elapsed * fire_rings.FPS) % fire_rings.PHASES if self.fire_rings else None
 
-    def draw_nameplate(self, image, scale, bob=0, wave=0):
-        """Re-typeset a tiny baked-in label after nearest-neighbor scaling."""
+    def draw_nameplate(self, image, scale, bob=0, wave=0, frame=None):
+        """Draw the label over its baked-in art, honoring per-frame alignment."""
         spec = self.nameplate
         if not spec:
             return
@@ -245,15 +245,18 @@ class ImageSkin:
             x0, y0, x1, y1 = spec["cover"]
             density = self.pixel_density
             wave_offset = round(density) if wave and len(self.frames.get("hover", ())) <= 1 else 0
+            frame_group = frame[0] if isinstance(frame, (tuple, list)) and frame else None
+            frame_offset = (spec.get("frame_offsets") or {}).get(frame_group, (0, 0))
+            frame_x, frame_y = frame_offset
             # cover coordinates are in the original PNG canvas; ImageSkin stores
             # the frame at one sample per `cell`, with the normal padding added.
             bx, by, _, _ = self.source_box
             cell = self._cell
             coords = [
-                (self.OX + (x0 - bx) / cell + wave_offset) * scale,
-                (self.OY + (y0 - by) / cell - round(bob * density)) * scale,
-                (self.OX + (x1 - bx) / cell + wave_offset) * scale,
-                (self.OY + (y1 - by) / cell - round(bob * density)) * scale,
+                (self.OX + (x0 + frame_x - bx) / cell + wave_offset) * scale,
+                (self.OY + (y0 + frame_y - by) / cell - round(bob * density)) * scale,
+                (self.OX + (x1 + frame_x - bx) / cell + wave_offset) * scale,
+                (self.OY + (y1 + frame_y - by) / cell - round(bob * density)) * scale,
             ]
             if self.flip:
                 width = image.width
