@@ -1,22 +1,22 @@
 {
   "schema": 1,
-  "version": "2.2.19",
+  "version": "2.2.20",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "9a33eb575e2ac2b8b61acb934e54ab9def0c6d95ad99f03e96781ac1cbd63acd",
+    "CHANGELOG.md": "78b5c1bd1d1f3524ae3cb46ebd795bd4cd47dba5e4a79f625116e9edba48ec3e",
     "CLAUDE_INSTALL.md": "dfeff509e86fbf7d410993c76f29f9341b41778f907fdae4cbd45a2c0af13225",
     "PRIVACY.md": "a6b744a5294d2a0405c965c3c304513467686b5dabcfdf8b7fc31c1822258d38",
-    "README.md": "5bee67926eb28ef99b2de443cb5ce65ca04586d6e09dfad55c06ee69690c0d61",
+    "README.md": "8129e9ac5c0aacf6b1e1f336f4f1194e4f2355505f1633f273b84405f6d997b1",
     "Start Pet.cmd": "474920ef6a78f387978e3bf78d43e9457ba2afb905fc698258ccab9cf1162406",
-    "VERSION": "fab262bc6e84cb0b7a70d9a33da7ae31de8039cdd55b4211912947e28aa9cdc5",
+    "VERSION": "43f83a0b708c4518cb434aa68b2327f39095700fe8b1b61b49a177180bd273d7",
     "app_launch.py": "072967c34118f3143ec1d7a36febd52c6559fa867efe42712a662a6336cd9778",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
-    "assets/fonts/mung_morning_label.png": "01b9e0e621b2415302bd79dc8276147d6a960174efda7faac38afa8b8d9ef193",
+    "assets/fonts/mung_morning_label.png": "f5b2f99c7dd1f459b079535cfb46463ba5cf5f330941bc8441d3f475e35568ca",
     "assets/pet-icons/charmander.png": "bba7d07606fbeb84357e8cbe724248c8e46381b63e9d48ccede82a75272f9de2",
     "assets/pet-icons/robot.png": "ecd0b835555f2803cbbb88e21bb11d14d7f950dec97a862e75d6dbaf70555ba1",
     "autorun.py": "2d373da12736514ef9d595a13dea26627170b9516a0623fbb17059f96184310d",
