@@ -155,7 +155,7 @@ class UpdateService:
             self.manual_requested=True
             self._start(True)
 
-    def _start(self,download):
+    def _start(self,download,automatic=False):
         with self._lock:
             if self.busy:return
             self.busy=True
@@ -168,8 +168,9 @@ class UpdateService:
                     phase='check'
                     data=self.fetch(f'https://api.github.com/repos/{REPOSITORY}/releases/latest')
                     self.offer=release_offer(data,current);self.package=None;self.install_requested=False;self.manual_requested=False
-                if self.offer and (download or self.auto):
+                if self.offer and (download or (automatic and self.auto)):
                     phase='download'
+                    self.status='다운로드 중'
                     self.package=download_offer(self.base,self.offer,self.fetch)
                     self.install_requested=download or self.auto
                     self.status=f"{self.offer['version']} 적용 대기" if self.install_requested else '다운로드 완료'
@@ -202,7 +203,8 @@ class UpdateService:
         return False
 
     def tick(self):
-        if self.enabled and not self.busy and not self.install_requested and time.monotonic()>=self.next_check:self.check()
+        if self.enabled and not self.busy and not self.install_requested and time.monotonic()>=self.next_check:
+            self._start(False,automatic=True)
 
 
 def launch_worker(base,package,offer,wait_pid,tray_only=False):
