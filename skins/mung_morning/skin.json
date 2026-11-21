@@ -1,0 +1,24 @@
+{
+  "name": "멍모닝",
+  "cell": 9.3671875,
+  "pixel_density": 2,
+  "light": [520, 835],
+  "fps": {
+    "idle": 3,
+    "working": 4,
+    "waiting": 3,
+    "hover": 8,
+    "celebrate": 8
+  },
+  "preserve_canvas": true,
+  "effects": {
+    "fire_rings": false,
+    "flame_shadow": false
+  },
+  "light_colors": {
+    "idle": [245, 170, 110],
+    "working": [70, 175, 255],
+    "waiting": [255, 190, 65],
+    "done": [100, 225, 150]
+  }
+}

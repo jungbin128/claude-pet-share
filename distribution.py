@@ -106,11 +106,11 @@ def build_package(source,output):
     # The public README contains only sharing information, never personal previews.
     share=source/'docs'/'SHARE_README.md'
     if share.exists():files['README.md']=share.read_bytes()
-    for prefix in ('assets','skins/charmander','skins/tokito_muichiro'):
+    for prefix in ('assets','skins/charmander','skins/tokito_muichiro','skins/mung_morning'):
         for path in sorted((source/prefix).rglob('*')):
             if not path.is_file():continue
             name=path.relative_to(source).as_posix()
-            packaged=(name in ('assets/claude-pet.ico','assets/claude-pet.png','assets/pet-icons/robot.png','assets/pet-icons/charmander.png') or name.startswith(('skins/charmander/','skins/tokito_muichiro/')))
+            packaged=(name in ('assets/claude-pet.ico','assets/claude-pet.png','assets/pet-icons/robot.png','assets/pet-icons/charmander.png') or name.startswith(('skins/charmander/','skins/tokito_muichiro/','skins/mung_morning/')))
             if not packaged:continue
             try:managed_path(name)
             except ValueError:continue
