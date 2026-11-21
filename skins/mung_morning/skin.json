@@ -2,16 +2,37 @@
   "name": "멍모닝",
   "nameplate": {
     "text": "멍모닝",
-    "cover": [350, 897, 700, 1017],
-    "border": [67, 38, 26],
-    "fill": [250, 229, 196],
-    "text_color": [65, 37, 28],
+    "cover": [
+      350,
+      897,
+      700,
+      1017
+    ],
+    "border": [
+      67,
+      38,
+      26
+    ],
+    "fill": [
+      250,
+      229,
+      196
+    ],
+    "text_color": [
+      65,
+      37,
+      28
+    ],
     "inset": 5,
-    "font_size": 10
+    "font_size": 10,
+    "pixel_threshold": 110
   },
   "cell": 9.3671875,
   "pixel_density": 2,
-  "light": [520, 835],
+  "light": [
+    520,
+    835
+  ],
   "fps": {
     "idle": 3,
     "working": 4,
@@ -25,9 +46,25 @@
     "flame_shadow": false
   },
   "light_colors": {
-    "idle": [245, 170, 110],
-    "working": [70, 175, 255],
-    "waiting": [255, 190, 65],
-    "done": [100, 225, 150]
+    "idle": [
+      245,
+      170,
+      110
+    ],
+    "working": [
+      70,
+      175,
+      255
+    ],
+    "waiting": [
+      255,
+      190,
+      65
+    ],
+    "done": [
+      100,
+      225,
+      150
+    ]
   }
 }

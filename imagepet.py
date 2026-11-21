@@ -262,18 +262,32 @@ class ImageSkin:
             inner = (round(coords[0] + inset), round(coords[1] + inset),
                      round(coords[2] - inset), round(coords[3] - inset))
             d.rounded_rectangle(inner, radius=max(1, radius - inset // 2), fill=fill)
-            font_size = max(7, round(float(spec.get("font_size", 10)) * scale))
+            # Render Korean glyphs on the same source-pixel grid as the pet,
+            # threshold anti-aliasing, then enlarge with nearest-neighbor.
+            base_scale = max(0.01, float(scale))
+            mask_size = (max(1, round(image.width / base_scale)),
+                         max(1, round(image.height / base_scale)))
+            mask = Image.new("L", mask_size, 0)
+            md = ImageDraw.Draw(mask)
+            font_size = max(7, round(float(spec.get("font_size", 10))))
             font_path = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", "malgun.ttf")
             font = ImageFont.truetype(font_path, font_size)
             cx, cy = (coords[0] + coords[2]) / 2, (coords[1] + coords[3]) / 2
             text_color = tuple(spec.get("text_color", (65, 37, 28))) + (255,)
             text = spec.get("text", "")
-            max_width = max(1, inner[2] - inner[0] - 2)
-            while font_size > 6 and d.textbbox((0, 0), text, font=font)[2] > max_width:
+            max_width = max(1, round((inner[2] - inner[0] - 2) / base_scale))
+            while font_size > 6 and md.textbbox((0, 0), text, font=font)[2] > max_width:
                 font_size -= 1
                 font = ImageFont.truetype(font_path, font_size)
-            d.text((round(cx), round(cy)), text, font=font,
-                   fill=text_color, anchor="mm")
+            md.text((round(cx / base_scale), round(cy / base_scale)), text,
+                    font=font, fill=255, anchor="mm")
+            threshold = int(spec.get("pixel_threshold", 110))
+            mask = mask.point(lambda value: 255 if value >= threshold else 0)
+            if mask.size != image.size:
+                mask = mask.resize(image.size, Image.NEAREST)
+            text_layer = Image.new("RGBA", image.size, text_color)
+            text_layer.putalpha(mask)
+            image.alpha_composite(text_layer)
         except (KeyError, TypeError, ValueError, OSError):
             # A missing system font must not prevent the pet itself from rendering.
             return
