@@ -115,7 +115,7 @@ class UpdateService:
                     self.package=download_offer(self.base,self.offer,self.fetch)
                     self.install_requested=download or self.auto
                     self.status='적용 대기' if self.install_requested else '다운로드 완료'
-                else:self.status=self.offer['version']+' 사용 가능' if self.offer else '최신 버전'
+                else:self.status=f"새 버전 {self.offer['version']} 있음" if self.offer else '새 버전 없음'
             except Exception:
                 self.status='연결·검증 실패'
             finally:
@@ -165,7 +165,7 @@ def launch_worker(base,package,offer,wait_pid,tray_only=False):
 def update_menu_items(service,back):
     return [
         ('뒤로',back,False,True,{'icon':'back'}),None,
-        ('업데이트 상태',None,False,True,{'section':True,'value':service.status}),
+        ('업데이트 상태',None,False,True,{'section':True,'value':service.status,'value_color':(139,130,121)}),
         ('새 버전 확인',service.check,False,True,{'icon':'clock','disabled':service.busy or not service.enabled}),
         ('지금 업데이트',service.request_install,False,False,{'icon':'open','disabled':service.busy or not service.offer or not service.enabled}),
         None,

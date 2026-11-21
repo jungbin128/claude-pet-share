@@ -628,7 +628,7 @@ class Menu:
             if meta.get("section"):
                 cy=(y0+y1)/2+2
                 bold_text(big,(S(m+19),S(m+cy)),it[0],F_SMALL,(128,119,110),"lm",stroke=0)
-                bold_text(big,(S(m+self.W-19),S(m+cy)),str(meta.get("value","")),F_SMALL,(178,88,46),"rm",stroke=0)
+                bold_text(big,(S(m+self.W-19),S(m+cy)),str(meta.get("value","")),F_SMALL,meta.get("value_color",(178,88,46)),"rm",stroke=0)
                 continue
             if "slider" in meta:
                 slider=meta["slider"]
