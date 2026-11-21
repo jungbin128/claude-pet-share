@@ -16,7 +16,7 @@ TOP_LEVEL=set('pet.pyw pixelpet.py imagepet.py fire_rings.py pixel_finish.py pet
 TOP_LEVEL.difference_update({'Start','Pet.cmd'});TOP_LEVEL.add('Start Pet.cmd')
 MAX_FILE=20*1024*1024
 MAX_TOTAL=80*1024*1024
-FONT_ASSETS={'assets/fonts/NeoDunggeunmoPro.ttf','assets/fonts/OFL.txt'}
+FONT_ASSETS={'assets/fonts/Galmuri11.ttf','assets/fonts/Galmuri-OFL.txt'}
 
 
 def version(value):

@@ -271,7 +271,7 @@ class ImageSkin:
             mask = Image.new("L", mask_size, 0)
             md = ImageDraw.Draw(mask)
             font_size = max(7, round(float(spec.get("font_size", 10))))
-            font_path = os.path.join(BASE, "assets", "fonts", "NeoDunggeunmoPro.ttf")
+            font_path = os.path.join(BASE, "assets", "fonts", "Galmuri11.ttf")
             font = ImageFont.truetype(font_path, font_size)
             cx, cy = (coords[0] + coords[2]) / 2, (coords[1] + coords[3]) / 2
             text_color = tuple(spec.get("text_color", (65, 37, 28))) + (255,)
