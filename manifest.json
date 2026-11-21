@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "2.2.11",
+  "version": "2.2.12",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "7f9ae86ad92331b6763f62b22bf655f78ba174809996a73bcfe370083b40e084",
+    "CHANGELOG.md": "698b5ed76d5aad567865f23d7f72d1042f5eedcb4865c414802aca009d0f163e",
     "CLAUDE_INSTALL.md": "dfeff509e86fbf7d410993c76f29f9341b41778f907fdae4cbd45a2c0af13225",
     "PRIVACY.md": "a6b744a5294d2a0405c965c3c304513467686b5dabcfdf8b7fc31c1822258d38",
     "README.md": "7a7dc9dd7031d3ed71e55e1396d7c94c19c323c70aeb6e34c42eed46c71f9a36",
     "Start Pet.cmd": "474920ef6a78f387978e3bf78d43e9457ba2afb905fc698258ccab9cf1162406",
-    "VERSION": "eb7620a00d80d302fac928f01a69cb4c918f699915724d853d7939dd4d1389e1",
+    "VERSION": "13054071a361992b8af01e23120bb0b2be12116a26aca31fc516773e93aae536",
     "app_launch.py": "072967c34118f3143ec1d7a36febd52c6559fa867efe42712a662a6336cd9778",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
@@ -60,7 +60,7 @@
     "skins/mung_morning/celebrate_0.png": "52f400ba2bc859e2ffa8cb62a57530a906cc9d3216f11bb7851447d576fa2260",
     "skins/mung_morning/hover_0.png": "5964216d7f2dcae595f3e822401b38553d78154d54152a50769dd0d03e3917ec",
     "skins/mung_morning/idle_0.png": "d01ebbed7b95d682d34f44599ece7cdbeecbd212935bc19402135a64a6ec4590",
-    "skins/mung_morning/skin.json": "6c407477a339ebb234033dab4e748413ef42cf7cdd17b53e61e273447294a5e2",
+    "skins/mung_morning/skin.json": "a26719afcb14d75abb979c8e620e3de8f6e090d0927827c32be3408b4be72a6f",
     "skins/mung_morning/waiting_0.png": "4771b052b2886cdf7830c0e66788f4dad5d8be5f47b664cb4a021ce2fa18ef98",
     "skins/mung_morning/working_0.png": "0f34bdc63c6b8b94443079e254139bcd15b7de3355fd67bd558f33a830d5288d",
     "skins/tokito_muichiro/celebrate_0.png": "9b99510b135f41abe563b11fd3461c1e1e271db36521acebe66801894fa760a8",
