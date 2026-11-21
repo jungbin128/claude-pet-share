@@ -10,8 +10,18 @@ import sys
 import tempfile
 import threading
 import time
+import urllib.parse
+import urllib.request
 
 from distribution import REPOSITORY,MAX_TOTAL,version,digest,read_archive,atomic_json
+
+
+class UpdateConnectionError(OSError):
+    pass
+
+
+class UpdateValidationError(ValueError):
+    pass
 
 
 def powershell_fetch(url,destination=None):
@@ -29,6 +39,46 @@ def powershell_fetch(url,destination=None):
     return json.loads(result.stdout)
 
 
+def urllib_fetch(url,destination=None):
+    headers={'User-Agent':'ClaudePet','Accept':'application/vnd.github+json'}
+    request=urllib.request.Request(url,headers=headers)
+    with urllib.request.urlopen(request,timeout=45 if destination else 30) as response:
+        if urllib.parse.urlparse(response.geturl()).hostname not in {
+            'api.github.com','github.com','release-assets.githubusercontent.com'
+        }:
+            raise UpdateValidationError('Unexpected GitHub redirect host')
+        if destination:
+            total=0
+            with open(destination,'wb') as output:
+                while True:
+                    block=response.read(1024*1024)
+                    if not block:break
+                    total+=len(block)
+                    if total>MAX_TOTAL:raise UpdateValidationError('Package exceeds size limit')
+                    output.write(block)
+            return
+        payload=response.read(2*1024*1024+1)
+        if len(payload)>2*1024*1024:raise UpdateValidationError('Release metadata too large')
+        return json.loads(payload.decode('utf-8'))
+
+
+def fetch(url,destination=None):
+    """Use the Python HTTPS client, with PowerShell as a Windows proxy fallback."""
+    try:
+        return urllib_fetch(url,destination)
+    except UpdateValidationError:
+        raise
+    except Exception as python_error:
+        if os.name!='nt':
+            raise UpdateConnectionError(f'Python HTTPS failed ({type(python_error).__name__})') from python_error
+        try:
+            return powershell_fetch(url,destination)
+        except Exception as powershell_error:
+            raise UpdateConnectionError(
+                f'Python HTTPS and PowerShell failed ({type(python_error).__name__}; {type(powershell_error).__name__})'
+            ) from powershell_error
+
+
 def release_offer(data,current):
     if not isinstance(data,dict) or data.get('draft') or data.get('prerelease'):return None
     tag=data.get('tag_name');new=version(tag)
@@ -44,15 +94,20 @@ def release_offer(data,current):
     return {'version':tag,'url':expected,'digest':checksum[7:],'size':asset['size']}
 
 
-def download_offer(base,offer,fetch=powershell_fetch):
+def download_offer(base,offer,fetch=fetch):
     folder=Path(base)/'updates';folder.mkdir(exist_ok=True)
     temporary=folder/('download-'+offer['version']+'.tmp')
     target=folder/('claude-pet-'+offer['version']+'.zip')
     try:
-        fetch(offer['url'],temporary)
-        if temporary.stat().st_size!=offer['size']:raise ValueError('Download size mismatch')
-        manifest,_=read_archive(temporary,offer['digest'])
-        if manifest['version']!=offer['version']:raise ValueError('Downloaded version mismatch')
+        try:fetch(offer['url'],temporary)
+        except UpdateValidationError:raise
+        except Exception as exc:raise UpdateConnectionError('Release asset download failed') from exc
+        try:
+            if temporary.stat().st_size!=offer['size']:raise UpdateValidationError('Downloaded package size mismatch')
+            manifest,_=read_archive(temporary,offer['digest'])
+            if manifest['version']!=offer['version']:raise UpdateValidationError('Downloaded version mismatch')
+        except UpdateValidationError:raise
+        except Exception as exc:raise UpdateValidationError('Downloaded package failed verification') from exc
         os.replace(temporary,target)
         return target
     finally:temporary.unlink(missing_ok=True)
@@ -68,7 +123,7 @@ def safe_to_restart():
 
 class UpdateService:
     INTERVAL=300
-    def __init__(self,base,fetch=powershell_fetch):
+    def __init__(self,base,fetch=fetch):
         self.base=Path(base);self.fetch=fetch;self.offer=None;self.package=None
         try:
             self.current_version=(self.base/'VERSION').read_text(encoding='utf8').strip()
@@ -106,18 +161,27 @@ class UpdateService:
             self.busy=True
         self.status='다운로드 중' if download else '확인 중'
         def work():
+            phase='local-check'
             try:
                 if not download:
                     current=(self.base/'VERSION').read_text(encoding='utf8').strip()
+                    phase='check'
                     data=self.fetch(f'https://api.github.com/repos/{REPOSITORY}/releases/latest')
                     self.offer=release_offer(data,current);self.package=None;self.install_requested=False;self.manual_requested=False
                 if self.offer and (download or self.auto):
+                    phase='download'
                     self.package=download_offer(self.base,self.offer,self.fetch)
                     self.install_requested=download or self.auto
                     self.status=f"{self.offer['version']} 적용 대기" if self.install_requested else '다운로드 완료'
                 else:self.status=f"새 버전 {self.offer['version']} 있음" if self.offer else '새 버전 없음'
+            except UpdateConnectionError as exc:
+                self.status='GitHub 연결 실패' if phase=='check' else '업데이트 다운로드 연결 실패'
+            except UpdateValidationError:
+                self.status='업데이트 파일 검증 실패'
+            except OSError:
+                self.status='업데이트 파일 저장 실패' if phase=='download' else '버전 정보 읽기 실패'
             except Exception:
-                self.status='연결·검증 실패'
+                self.status='GitHub 응답 확인 실패' if phase=='check' else '업데이트 준비 실패'
             finally:
                 self.next_check=time.monotonic()+self.INTERVAL
                 self.busy=False

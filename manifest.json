@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "2.2.10",
+  "version": "2.2.11",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "1350d702553f8a346d04943f576f97debe5db0af5d98a77a15db29c9bf2dca58",
+    "CHANGELOG.md": "7f9ae86ad92331b6763f62b22bf655f78ba174809996a73bcfe370083b40e084",
     "CLAUDE_INSTALL.md": "dfeff509e86fbf7d410993c76f29f9341b41778f907fdae4cbd45a2c0af13225",
     "PRIVACY.md": "a6b744a5294d2a0405c965c3c304513467686b5dabcfdf8b7fc31c1822258d38",
     "README.md": "7a7dc9dd7031d3ed71e55e1396d7c94c19c323c70aeb6e34c42eed46c71f9a36",
     "Start Pet.cmd": "474920ef6a78f387978e3bf78d43e9457ba2afb905fc698258ccab9cf1162406",
-    "VERSION": "a7f92c9455474f0316872e6c8736096e3b896df5adf1c2e5ac8a1a81b6baa642",
+    "VERSION": "eb7620a00d80d302fac928f01a69cb4c918f699915724d853d7939dd4d1389e1",
     "app_launch.py": "072967c34118f3143ec1d7a36febd52c6559fa867efe42712a662a6336cd9778",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
@@ -74,7 +74,7 @@
     "tray_host.py": "e20bb7bf705ece3f50eb42c8241c5d7794c312582e3c9f620c4462311a6abb43",
     "uninstall.py": "f781c5bb455f9c4633045cd639719e04c9c298f5ad9d2925a35c4ba357a494fd",
     "update_worker.py": "fc0e85768a416167df4ddcfd06c5ebc2b0758ab6f2ec4a9cc5900ea610c8d76c",
-    "updater.py": "cbaa9cd1710c3ba5bc5009955f9b04e8815658cc0c739a7c119d278402102721",
+    "updater.py": "bbdfe071cac5e522dc29066c24fc822c17e830254b4f9f1296155f24e35a7a94",
     "usage_sync.ps1": "f43e7c135486f5b3395d0eafac1e44216084ca36ac9db09c791d2c7a700beead",
     "watchers.py": "999cd3dba1a0abaeb42bc94478b5cea28bfa0e7c91e718be19e27eaac3a05d8b"
   }
