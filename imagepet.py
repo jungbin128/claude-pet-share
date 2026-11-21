@@ -263,19 +263,17 @@ class ImageSkin:
                      round(coords[2] - inset), round(coords[3] - inset))
             d.rounded_rectangle(inner, radius=max(1, radius - inset // 2), fill=fill)
             font_size = max(7, round(float(spec.get("font_size", 10)) * scale))
-            font_path = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", "malgunbd.ttf")
+            font_path = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", "malgun.ttf")
             font = ImageFont.truetype(font_path, font_size)
             cx, cy = (coords[0] + coords[2]) / 2, (coords[1] + coords[3]) / 2
             text_color = tuple(spec.get("text_color", (65, 37, 28))) + (255,)
             text = spec.get("text", "")
-            stroke = max(1, round(scale * 0.35))
-            max_width = max(1, inner[2] - inner[0] - 2 * stroke)
-            while font_size > 6 and d.textbbox((0, 0), text, font=font, stroke_width=stroke)[2] > max_width:
+            max_width = max(1, inner[2] - inner[0] - 2)
+            while font_size > 6 and d.textbbox((0, 0), text, font=font)[2] > max_width:
                 font_size -= 1
                 font = ImageFont.truetype(font_path, font_size)
             d.text((round(cx), round(cy)), text, font=font,
-                   fill=text_color, anchor="mm", stroke_width=stroke,
-                   stroke_fill=text_color)
+                   fill=text_color, anchor="mm")
         except (KeyError, TypeError, ValueError, OSError):
             # A missing system font must not prevent the pet itself from rendering.
             return
