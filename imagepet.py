@@ -232,7 +232,7 @@ class ImageSkin:
     def effect_token(self, elapsed):
         return int(elapsed * fire_rings.FPS) % fire_rings.PHASES if self.fire_rings else None
 
-    def draw_nameplate(self, image, scale, bob=0):
+    def draw_nameplate(self, image, scale, bob=0, wave=0):
         """Re-typeset a tiny baked-in label after nearest-neighbor scaling."""
         spec = self.nameplate
         if not spec:
@@ -240,14 +240,15 @@ class ImageSkin:
         try:
             x0, y0, x1, y1 = spec["cover"]
             density = self.pixel_density
+            wave_offset = round(density) if wave and len(self.frames.get("hover", ())) <= 1 else 0
             # cover coordinates are in the original PNG canvas; ImageSkin stores
             # the frame at one sample per `cell`, with the normal padding added.
             bx, by, _, _ = self.source_box
             cell = self._cell
             coords = [
-                (self.OX + (x0 - bx) / cell) * scale,
+                (self.OX + (x0 - bx) / cell + wave_offset) * scale,
                 (self.OY + (y0 - by) / cell - round(bob * density)) * scale,
-                (self.OX + (x1 - bx) / cell) * scale,
+                (self.OX + (x1 - bx) / cell + wave_offset) * scale,
                 (self.OY + (y1 - by) / cell - round(bob * density)) * scale,
             ]
             if self.flip:
@@ -276,13 +277,22 @@ class ImageSkin:
             text_color = tuple(spec.get("text_color", (65, 37, 28))) + (255,)
             text = spec.get("text", "")
             max_width = max(1, round((inner[2] - inner[0] - 2) / base_scale))
-            while font_size > 6 and md.textbbox((0, 0), text, font=font)[2] > max_width:
+            text_box = md.textbbox((0, 0), text, font=font)
+            while font_size > 6 and text_box[2] - text_box[0] > max_width:
                 font_size -= 1
                 font = ImageFont.truetype(font_path, font_size)
-            md.text((round(cx / base_scale), round(cy / base_scale)), text,
-                    font=font, fill=255, anchor="mm")
+                text_box = md.textbbox((0, 0), text, font=font)
+            glyph = Image.new("L", (max(1, text_box[2] - text_box[0]),
+                                     max(1, text_box[3] - text_box[1])), 0)
+            ImageDraw.Draw(glyph).text((-text_box[0], -text_box[1]), text, font=font, fill=255)
             threshold = int(spec.get("pixel_threshold", 110))
-            mask = mask.point(lambda value: 255 if value >= threshold else 0)
+            glyph = glyph.point(lambda value: 255 if value >= threshold else 0)
+            ink_box = glyph.getbbox()
+            if ink_box:
+                glyph = glyph.crop(ink_box)
+                gx = round(cx / base_scale - glyph.width / 2)
+                gy = round(cy / base_scale - glyph.height / 2)
+                mask.paste(glyph, (gx, gy))
             if mask.size != image.size:
                 mask = mask.resize(image.size, Image.NEAREST)
             text_layer = Image.new("RGBA", image.size, text_color)
