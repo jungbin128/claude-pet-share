@@ -2,6 +2,10 @@
 
 버전은 `주 버전.기능 버전.수정 버전` 형식입니다. 한 번의 배포에 여러 기능이 들어가도 기능 버전은 한 번 올립니다. 기능 추가와 수정이 함께 있으면 기능 버전을 올리고 수정 버전은 0으로 시작합니다. 자세한 규칙은 [버전 관리](docs/VERSIONING.md)를 따릅니다.
 
+## [2.2.16] - 2026-11-21
+
+- 업데이트 확인을 별도 제한 시간 프로세스에서 실행해 무응답 상태 방지
+
 ## [2.2.15] - 2026-11-21
 
 - 업데이트 확인 리디렉션과 네트워크 대기 상한
@@ -182,3 +186,4 @@
 [2.2.13]: https://github.com/jungbin128/claude-pet/compare/2.2.12...2.2.13
 [2.2.14]: https://github.com/jungbin128/claude-pet/compare/2.2.13...2.2.14
 [2.2.15]: https://github.com/jungbin128/claude-pet/compare/2.2.14...2.2.15
+[2.2.16]: https://github.com/jungbin128/claude-pet/compare/2.2.15...2.2.16

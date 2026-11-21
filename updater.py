@@ -10,8 +10,6 @@ import sys
 import tempfile
 import threading
 import time
-import urllib.parse
-import urllib.request
 
 from distribution import REPOSITORY,MAX_TOTAL,version,digest,read_archive,atomic_json
 
@@ -22,11 +20,6 @@ class UpdateConnectionError(OSError):
 
 class UpdateValidationError(ValueError):
     pass
-
-
-class LimitedRedirectHandler(urllib.request.HTTPRedirectHandler):
-    max_redirections=2
-    max_repeats=1
 
 
 def powershell_fetch(url,destination=None):
@@ -46,44 +39,46 @@ def powershell_fetch(url,destination=None):
     return json.loads(result.stdout)
 
 
-def urllib_fetch(url,destination=None):
-    headers={'User-Agent':'ClaudePet','Accept':'application/vnd.github+json'}
-    request=urllib.request.Request(url,headers=headers)
-    opener=urllib.request.build_opener(LimitedRedirectHandler())
-    with opener.open(request,timeout=25 if destination else 8) as response:
-        if urllib.parse.urlparse(response.geturl()).hostname not in {
-            'api.github.com','github.com','release-assets.githubusercontent.com'
-        }:
-            raise UpdateValidationError('Unexpected GitHub redirect host')
-        if destination:
-            total=0
-            with open(destination,'wb') as output:
-                while True:
-                    block=response.read(1024*1024)
-                    if not block:break
-                    total+=len(block)
-                    if total>MAX_TOTAL:raise UpdateValidationError('Package exceeds size limit')
-                    output.write(block)
-            return
-        payload=response.read(2*1024*1024+1)
-        if len(payload)>2*1024*1024:raise UpdateValidationError('Release metadata too large')
-        return json.loads(payload.decode('utf-8'))
+def isolated_python_fetch(url,destination=None):
+    """Fetch in a killable process so DNS and TLS setup cannot pin the UI worker."""
+    executable=Path(sys.executable)
+    python=executable.with_name('python.exe')
+    if not python.is_file():python=executable
+    helper=Path(__file__).with_name('update_fetch.py')
+    args=[str(python),'-X','utf8','-I',str(helper),url]
+    if destination:args.extend(['--output',str(destination)])
+    timeout=45 if destination else 12
+    try:
+        result=subprocess.run(args,capture_output=True,encoding='utf8',errors='replace',
+            creationflags=0x08000000 if os.name=='nt' else 0,timeout=timeout)
+    except subprocess.TimeoutExpired as exc:
+        raise UpdateConnectionError('Update request exceeded its hard time limit') from exc
+    if result.returncode==2:
+        raise UpdateValidationError(result.stderr[-500:] or 'Update response rejected')
+    if result.returncode:
+        raise UpdateConnectionError('Isolated HTTPS request failed')
+    if destination:return
+    if len(result.stdout)>2*1024*1024:
+        raise UpdateValidationError('Release metadata too large')
+    try:return json.loads(result.stdout)
+    except (TypeError,json.JSONDecodeError) as exc:
+        raise UpdateValidationError('Invalid release metadata response') from exc
 
 
 def fetch(url,destination=None):
-    """Use the Python HTTPS client, with PowerShell as a Windows proxy fallback."""
+    """Use a killable HTTPS client, with PowerShell as a Windows proxy fallback."""
     try:
-        return urllib_fetch(url,destination)
+        return isolated_python_fetch(url,destination)
     except UpdateValidationError:
         raise
     except Exception as python_error:
         if os.name!='nt':
-            raise UpdateConnectionError(f'Python HTTPS failed ({type(python_error).__name__})') from python_error
+            raise UpdateConnectionError(f'Isolated Python HTTPS failed ({type(python_error).__name__})') from python_error
         try:
             return powershell_fetch(url,destination)
         except Exception as powershell_error:
             raise UpdateConnectionError(
-                f'Python HTTPS and PowerShell failed ({type(python_error).__name__}; {type(powershell_error).__name__})'
+                f'Isolated Python HTTPS and PowerShell failed ({type(python_error).__name__}; {type(powershell_error).__name__})'
             ) from powershell_error
 
 

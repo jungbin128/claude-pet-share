@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 REPOSITORY='jungbin128/claude-pet-share'
 VERSION_PATTERN=re.compile(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)')
-TOP_LEVEL=set('pet.pyw pixelpet.py imagepet.py fire_rings.py pixel_finish.py pet_hook.py watchers.py multi_monitor.py screen_layout.py text_behind.py text_behind.ps1 ocr_text_behind.ps1 chat_watch.ps1 claude_ui.ps1 usage_sync.ps1 completion_state.py bubble_preferences.py autorun.py app_launch.py shell_priority.py tray_host.py uninstall.py distribution.py integration.py install.py updater.py update_worker.py VERSION CHANGELOG.md README.md CLAUDE_INSTALL.md PRIVACY.md requirements.txt setup.ps1 Start Pet.cmd'.split())
+TOP_LEVEL=set('pet.pyw pixelpet.py imagepet.py fire_rings.py pixel_finish.py pet_hook.py watchers.py multi_monitor.py screen_layout.py text_behind.py text_behind.ps1 ocr_text_behind.ps1 chat_watch.ps1 claude_ui.ps1 usage_sync.ps1 completion_state.py bubble_preferences.py autorun.py app_launch.py shell_priority.py tray_host.py uninstall.py distribution.py integration.py install.py updater.py update_fetch.py update_worker.py VERSION CHANGELOG.md README.md CLAUDE_INSTALL.md PRIVACY.md requirements.txt setup.ps1 Start Pet.cmd'.split())
 # File names containing spaces are explicit rather than split into words.
 TOP_LEVEL.difference_update({'Start','Pet.cmd'});TOP_LEVEL.add('Start Pet.cmd')
 MAX_FILE=20*1024*1024

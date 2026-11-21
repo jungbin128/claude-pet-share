@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "2.2.15",
+  "version": "2.2.16",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "f4732597df953655a9d260bcc16d1a2b70813cdff7bcc319e0767b64578d0931",
+    "CHANGELOG.md": "2f12e076ca1540a385f35b53abc98aca609ffcf936d41689fdefdcbdcf940e60",
     "CLAUDE_INSTALL.md": "dfeff509e86fbf7d410993c76f29f9341b41778f907fdae4cbd45a2c0af13225",
     "PRIVACY.md": "a6b744a5294d2a0405c965c3c304513467686b5dabcfdf8b7fc31c1822258d38",
     "README.md": "5bee67926eb28ef99b2de443cb5ce65ca04586d6e09dfad55c06ee69690c0d61",
     "Start Pet.cmd": "474920ef6a78f387978e3bf78d43e9457ba2afb905fc698258ccab9cf1162406",
-    "VERSION": "fb7148de29266558056c7da3b36473b37120422288934631bad21f3742e5a763",
+    "VERSION": "b8e5521b5fa0208c53a2d946fb62964f31c7921799f3189217aa9b971bf8ec68",
     "app_launch.py": "072967c34118f3143ec1d7a36febd52c6559fa867efe42712a662a6336cd9778",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
@@ -24,7 +24,7 @@
     "chat_watch.ps1": "7b15e7cd2289636290af843b6dcfa9e3e6a5d66dfa8073d89eaeb00595da72cb",
     "claude_ui.ps1": "acc18fddef063fb08fcb5e993c4559d4db060938ab4915771ff14cca3cd3a6e2",
     "completion_state.py": "d792742014f6495031c629b501f160622992b164f49f502706e50f37e7c88fc0",
-    "distribution.py": "ad1755459ac45b678d5cc630bbe881c502e5bb2fcf6647db11ef91e7cb3100b4",
+    "distribution.py": "d81f3ee4b167741d72b0407171f560a61d579d4d660d5ec8beffb18e64e13f37",
     "fire_rings.py": "37b39a96998cdba279ae4685f280f29b0d436bbc7e8741e3ef92d030ce51f77c",
     "imagepet.py": "5577707ec4ec39227153e3b0aad38b8fa2cdb4584c21ab36ad9cd9f6a27d55ff",
     "install.py": "0fd1fcbe18974d73b7f54eb97c316add79b0921ae4c8e793ac136e81645442d4",
@@ -72,8 +72,9 @@
     "text_behind.py": "81408c94c5a251252bd7197852cd2e19920e5f9054aaaebd6eab83bce3590b4d",
     "tray_host.py": "e20bb7bf705ece3f50eb42c8241c5d7794c312582e3c9f620c4462311a6abb43",
     "uninstall.py": "f781c5bb455f9c4633045cd639719e04c9c298f5ad9d2925a35c4ba357a494fd",
+    "update_fetch.py": "1eed9148095d299d2311128c8af2b2ba066a41819de2894d0849bfb9cd6c55e0",
     "update_worker.py": "fc0e85768a416167df4ddcfd06c5ebc2b0758ab6f2ec4a9cc5900ea610c8d76c",
-    "updater.py": "5930d565d62b304f273c4916a12dcb347da3a8793f6de34822fef1426dbc6cec",
+    "updater.py": "7ee7789b07ee143525af634fce6fb7913813b92de843e01d5b056e9ec9087b04",
     "usage_sync.ps1": "f43e7c135486f5b3395d0eafac1e44216084ca36ac9db09c791d2c7a700beead",
     "watchers.py": "999cd3dba1a0abaeb42bc94478b5cea28bfa0e7c91e718be19e27eaac3a05d8b"
   }
