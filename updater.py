@@ -24,16 +24,23 @@ class UpdateValidationError(ValueError):
     pass
 
 
+class LimitedRedirectHandler(urllib.request.HTTPRedirectHandler):
+    max_redirections=2
+    max_repeats=1
+
+
 def powershell_fetch(url,destination=None):
     env=os.environ.copy();env['CLAUDE_PET_URL']=url
+    network_timeout=30 if destination else 10
+    process_timeout=40 if destination else 15
     prefix="$ErrorActionPreference='Stop'; [Console]::OutputEncoding=[Text.UTF8Encoding]::new(); "
     if destination:
         env['CLAUDE_PET_DOWNLOAD']=str(destination)
-        command=prefix+"Invoke-WebRequest -UseBasicParsing -Uri $env:CLAUDE_PET_URL -OutFile $env:CLAUDE_PET_DOWNLOAD -TimeoutSec 45"
+        command=prefix+f"Invoke-WebRequest -UseBasicParsing -Uri $env:CLAUDE_PET_URL -OutFile $env:CLAUDE_PET_DOWNLOAD -TimeoutSec {network_timeout}"
     else:
-        command=prefix+"$r=Invoke-RestMethod -Uri $env:CLAUDE_PET_URL -Headers @{'User-Agent'='ClaudePet';'Accept'='application/vnd.github+json'} -TimeoutSec 30; $r | ConvertTo-Json -Depth 20 -Compress"
+        command=prefix+f"$r=Invoke-RestMethod -Uri $env:CLAUDE_PET_URL -Headers @{{'User-Agent'='ClaudePet';'Accept'='application/vnd.github+json'}} -TimeoutSec {network_timeout}; $r | ConvertTo-Json -Depth 20 -Compress"
     result=subprocess.run(['powershell.exe','-NoProfile','-NonInteractive','-Command',command],env=env,
-        check=True,capture_output=True,encoding='utf8',errors='replace',creationflags=0x08000000,timeout=55)
+        check=True,capture_output=True,encoding='utf8',errors='replace',creationflags=0x08000000,timeout=process_timeout)
     if destination:return
     if len(result.stdout)>2*1024*1024:raise ValueError('Release metadata too large')
     return json.loads(result.stdout)
@@ -42,7 +49,8 @@ def powershell_fetch(url,destination=None):
 def urllib_fetch(url,destination=None):
     headers={'User-Agent':'ClaudePet','Accept':'application/vnd.github+json'}
     request=urllib.request.Request(url,headers=headers)
-    with urllib.request.urlopen(request,timeout=45 if destination else 30) as response:
+    opener=urllib.request.build_opener(LimitedRedirectHandler())
+    with opener.open(request,timeout=25 if destination else 8) as response:
         if urllib.parse.urlparse(response.geturl()).hostname not in {
             'api.github.com','github.com','release-assets.githubusercontent.com'
         }:
