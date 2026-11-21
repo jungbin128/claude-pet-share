@@ -26,7 +26,7 @@
     "inset": 5,
     "font_size": 11,
     "text_offset_y": 1,
-    "pixel_threshold": 110
+    "pixel_threshold": 50
   },
   "cell": 9.3671875,
   "pixel_density": 2,
