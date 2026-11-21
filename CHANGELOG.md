@@ -2,9 +2,9 @@
 
 버전은 `주 버전.기능 버전.수정 버전` 형식입니다. 한 번의 배포에 여러 기능이 들어가도 기능 버전은 한 번 올립니다. 기능 추가와 수정이 함께 있으면 기능 버전을 올리고 수정 버전은 0으로 시작합니다. 자세한 규칙은 [버전 관리](docs/VERSIONING.md)를 따릅니다.
 
-## [2.2.20] - 2026-11-21
+## [2.2.21] - 2026-11-21
 
-- 멍모닝 이름표를 둥근 주아체 픽셀 글자로 교체
+- 멍모닝 이름표 글꼴을 검증된 픽셀 비트맵으로 복귀
 
 ## [2.2.19] - 2026-11-21
 
@@ -206,4 +206,4 @@
 [2.2.17]: https://github.com/jungbin128/claude-pet/compare/2.2.16...2.2.17
 [2.2.18]: https://github.com/jungbin128/claude-pet/compare/2.2.17...2.2.18
 [2.2.19]: https://github.com/jungbin128/claude-pet/compare/2.2.18...2.2.19
-[2.2.20]: https://github.com/jungbin128/claude-pet/compare/2.2.19...2.2.20
+[2.2.21]: https://github.com/jungbin128/claude-pet/compare/2.2.19...2.2.21

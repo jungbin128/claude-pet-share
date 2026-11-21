@@ -42,9 +42,7 @@ Windows 10/11 전용입니다. Claude 앱의 접근성 이름과 로컬 파일 �
 
 ## Third-party font attribution
 
-The pixel lettering used on the Mung Morning nameplate is rasterized from Galmuri11 by Lee Minseo (quiple) and Jua by The Jua Project Authors (Copyright 2018). Both font families are licensed under the SIL Open Font License, Version 1.1. The bitmap is included as an image; the original font files are not included in the update package.
-
-Jua source and license: https://github.com/google/fonts/tree/main/ofl/jua
+The small bitmap lettering used on the Mung Morning nameplate was rasterized from Galmuri11 by Lee Minseo (quiple). Copyright (c) 2019–2025 Lee Minseo. It is distributed under the SIL Open Font License, Version 1.1. The complete license text follows; the original font files are not included in the update package.
 
 ```text
 Copyright (c) 2019–2025 Lee Minseo (quiple@quiple.dev)
