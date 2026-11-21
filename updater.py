@@ -114,7 +114,7 @@ class UpdateService:
                 if self.offer and (download or self.auto):
                     self.package=download_offer(self.base,self.offer,self.fetch)
                     self.install_requested=download or self.auto
-                    self.status='적용 대기' if self.install_requested else '다운로드 완료'
+                    self.status=f"{self.offer['version']} 적용 대기" if self.install_requested else '다운로드 완료'
                 else:self.status=f"새 버전 {self.offer['version']} 있음" if self.offer else '새 버전 없음'
             except Exception:
                 self.status='연결·검증 실패'
@@ -163,11 +163,18 @@ def launch_worker(base,package,offer,wait_pid,tray_only=False):
 
 
 def update_menu_items(service,back):
+    version=service.offer['version'] if service.offer else None
+    if service.install_requested and version:
+        action_label=f'{version} 적용 대기'
+    elif version:
+        action_label=f'{version} 지금 업데이트'
+    else:
+        action_label='지금 업데이트'
     return [
         ('뒤로',back,False,True,{'icon':'back'}),None,
         ('업데이트 상태',None,False,True,{'section':True,'value':service.status,'value_color':(139,130,121)}),
         ('새 버전 확인',service.check,False,True,{'icon':'clock','disabled':service.busy or not service.enabled}),
-        ('지금 업데이트',service.request_install,False,False,{'icon':'open','disabled':service.busy or not service.offer or not service.enabled}),
+        (action_label,service.request_install,False,False,{'icon':'open','disabled':service.busy or not service.offer or not service.enabled or service.install_requested}),
         None,
         ('자동 업데이트',lambda:service.set_auto(not service.auto),False,True,{'icon':'clock','disabled':not service.enabled,
             'toggle':{'label':'','value':service.auto,'change':lambda:service.set_auto(not service.auto)}}),

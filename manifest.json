@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "version": "2.2.5",
+  "version": "2.2.6",
   "repository": "jungbin128/claude-pet-share",
   "python_min": [
     3,
     12
   ],
   "files": {
-    "CHANGELOG.md": "fd78295af23f4b3803766ba741cc4826899ccd64e3feea2c77688ec75acbc3b0",
+    "CHANGELOG.md": "5a312880421de02dd0a6b28ffadbacbb52df81b2adcfea097f27cf5bebbb590b",
     "CLAUDE_INSTALL.md": "dfeff509e86fbf7d410993c76f29f9341b41778f907fdae4cbd45a2c0af13225",
     "PRIVACY.md": "a6b744a5294d2a0405c965c3c304513467686b5dabcfdf8b7fc31c1822258d38",
     "README.md": "7a7dc9dd7031d3ed71e55e1396d7c94c19c323c70aeb6e34c42eed46c71f9a36",
     "Start Pet.cmd": "474920ef6a78f387978e3bf78d43e9457ba2afb905fc698258ccab9cf1162406",
-    "VERSION": "f56c797a25f16ade37ae22d56124b085d6bc58d05cc9f73d2075f474c170204b",
+    "VERSION": "f74029b9ad220f7a272f438a0cb6a2bb7399011db7dcfb5d4d2f4e8b0991c600",
     "app_launch.py": "072967c34118f3143ec1d7a36febd52c6559fa867efe42712a662a6336cd9778",
     "assets/claude-pet.ico": "ca71f9d59d04d97935e6d403893a61a1be5e2b19f2ee1c3f33a661397d29c74a",
     "assets/claude-pet.png": "9128cf323ac5ee1f7b846a9db8daf257f797c4d14c8be42d5252bf3ade66fc40",
@@ -25,7 +25,7 @@
     "completion_state.py": "d792742014f6495031c629b501f160622992b164f49f502706e50f37e7c88fc0",
     "distribution.py": "41b31a0136eaf4dd22a0d4d4c92bd979bf6f538a7cef4824c9711dd691033f72",
     "fire_rings.py": "37b39a96998cdba279ae4685f280f29b0d436bbc7e8741e3ef92d030ce51f77c",
-    "imagepet.py": "b76f163cd2fd11d9101115a6f0b4870a9ed638cb153718c6a6e45648422f5c70",
+    "imagepet.py": "5be17231dbb36a22b130ea6c50bc9ef19da3d131b661388b3f9b22ef6a716670",
     "install.py": "0fd1fcbe18974d73b7f54eb97c316add79b0921ae4c8e793ac136e81645442d4",
     "integration.py": "3ad4931d0f58b9c5fef9a69a57cfabb711f76c8e6c43f0c9566361765e7f8f3a",
     "multi_monitor.py": "a09dfec48af730fbfb1edd36401537bd36dffc6462651b8e232b5e6c28f3dd73",
@@ -58,7 +58,7 @@
     "skins/mung_morning/celebrate_0.png": "52f400ba2bc859e2ffa8cb62a57530a906cc9d3216f11bb7851447d576fa2260",
     "skins/mung_morning/hover_0.png": "5964216d7f2dcae595f3e822401b38553d78154d54152a50769dd0d03e3917ec",
     "skins/mung_morning/idle_0.png": "d01ebbed7b95d682d34f44599ece7cdbeecbd212935bc19402135a64a6ec4590",
-    "skins/mung_morning/skin.json": "9a4414d23c3474d6b52bbdf4220351a0db5a04dd0ed838485fb1afd89d60f6da",
+    "skins/mung_morning/skin.json": "a6bb121131d846790073390ed7ff4365c7359f0096d4faa22cf0443c6a2dbe98",
     "skins/mung_morning/waiting_0.png": "4771b052b2886cdf7830c0e66788f4dad5d8be5f47b664cb4a021ce2fa18ef98",
     "skins/mung_morning/working_0.png": "0f34bdc63c6b8b94443079e254139bcd15b7de3355fd67bd558f33a830d5288d",
     "skins/tokito_muichiro/celebrate_0.png": "9b99510b135f41abe563b11fd3461c1e1e271db36521acebe66801894fa760a8",
@@ -72,7 +72,7 @@
     "tray_host.py": "e20bb7bf705ece3f50eb42c8241c5d7794c312582e3c9f620c4462311a6abb43",
     "uninstall.py": "f781c5bb455f9c4633045cd639719e04c9c298f5ad9d2925a35c4ba357a494fd",
     "update_worker.py": "fc0e85768a416167df4ddcfd06c5ebc2b0758ab6f2ec4a9cc5900ea610c8d76c",
-    "updater.py": "4937e9a4dd81feeaf58eb609a69b804df90264b77d224725f8c9f7e62a76fbdf",
+    "updater.py": "cbaa9cd1710c3ba5bc5009955f9b04e8815658cc0c739a7c119d278402102721",
     "usage_sync.ps1": "f43e7c135486f5b3395d0eafac1e44216084ca36ac9db09c791d2c7a700beead",
     "watchers.py": "999cd3dba1a0abaeb42bc94478b5cea28bfa0e7c91e718be19e27eaac3a05d8b"
   }

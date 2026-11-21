@@ -25,6 +25,7 @@
     ],
     "inset": 5,
     "font_size": 10,
+    "text_offset_y": 1,
     "pixel_threshold": 110
   },
   "cell": 9.3671875,

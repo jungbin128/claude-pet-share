@@ -291,7 +291,7 @@ class ImageSkin:
             if ink_box:
                 glyph = glyph.crop(ink_box)
                 gx = round(cx / base_scale - glyph.width / 2)
-                gy = round(cy / base_scale - glyph.height / 2)
+                gy = round(cy / base_scale - glyph.height / 2 + float(spec.get("text_offset_y", 0)))
                 mask.paste(glyph, (gx, gy))
             if mask.size != image.size:
                 mask = mask.resize(image.size, Image.NEAREST)
