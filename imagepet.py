@@ -155,6 +155,10 @@ class ImageSkin:
         self.flame_shadow = bool((conf.get("effects") or {}).get("flame_shadow"))
         self._flame_shadows = {}
         self.nameplate = conf.get("nameplate")
+        self.nameplate_bitmap = None
+        if self.nameplate and self.nameplate.get("bitmap") == "assets/fonts/mung_morning_label.png":
+            with Image.open(os.path.join(BASE, "assets", "fonts", "mung_morning_label.png")) as bitmap:
+                self.nameplate_bitmap = bitmap.convert("L")
         groups, blink = _frame_files(folder)
         if "idle" not in groups:
             raise FileNotFoundError(f"{folder}: sprite.png 또는 idle_0.png 가 없음")
@@ -270,23 +274,26 @@ class ImageSkin:
                          max(1, round(image.height / base_scale)))
             mask = Image.new("L", mask_size, 0)
             md = ImageDraw.Draw(mask)
-            font_size = max(7, round(float(spec.get("font_size", 10))))
-            font_path = os.path.join(BASE, "assets", "fonts", "Galmuri11.ttf")
-            font = ImageFont.truetype(font_path, font_size)
             cx, cy = (coords[0] + coords[2]) / 2, (coords[1] + coords[3]) / 2
             text_color = tuple(spec.get("text_color", (65, 37, 28))) + (255,)
-            text = spec.get("text", "")
             max_width = max(1, round((inner[2] - inner[0] - 2) / base_scale))
-            text_box = md.textbbox((0, 0), text, font=font)
-            while font_size > 6 and text_box[2] - text_box[0] > max_width:
-                font_size -= 1
+            if self.nameplate_bitmap is not None:
+                glyph = self.nameplate_bitmap.copy()
+            else:
+                font_size = max(7, round(float(spec.get("font_size", 10))))
+                font_path = os.path.join(BASE, "assets", "fonts", "Galmuri11.ttf")
                 font = ImageFont.truetype(font_path, font_size)
+                text = spec.get("text", "")
                 text_box = md.textbbox((0, 0), text, font=font)
-            glyph = Image.new("L", (max(1, text_box[2] - text_box[0]),
-                                     max(1, text_box[3] - text_box[1])), 0)
-            ImageDraw.Draw(glyph).text((-text_box[0], -text_box[1]), text, font=font, fill=255)
-            threshold = int(spec.get("pixel_threshold", 110))
-            glyph = glyph.point(lambda value: 255 if value >= threshold else 0)
+                while font_size > 6 and text_box[2] - text_box[0] > max_width:
+                    font_size -= 1
+                    font = ImageFont.truetype(font_path, font_size)
+                    text_box = md.textbbox((0, 0), text, font=font)
+                glyph = Image.new("L", (max(1, text_box[2] - text_box[0]),
+                                         max(1, text_box[3] - text_box[1])), 0)
+                ImageDraw.Draw(glyph).text((-text_box[0], -text_box[1]), text, font=font, fill=255)
+                threshold = int(spec.get("pixel_threshold", 110))
+                glyph = glyph.point(lambda value: 255 if value >= threshold else 0)
             ink_box = glyph.getbbox()
             if ink_box:
                 glyph = glyph.crop(ink_box)

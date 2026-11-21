@@ -16,7 +16,6 @@ TOP_LEVEL=set('pet.pyw pixelpet.py imagepet.py fire_rings.py pixel_finish.py pet
 TOP_LEVEL.difference_update({'Start','Pet.cmd'});TOP_LEVEL.add('Start Pet.cmd')
 MAX_FILE=20*1024*1024
 MAX_TOTAL=80*1024*1024
-FONT_ASSETS={'assets/fonts/Galmuri11.ttf','assets/fonts/Galmuri-OFL.txt'}
 
 
 def version(value):
@@ -37,7 +36,6 @@ def atomic_json(path,data):
 
 def managed_path(name):
     if not isinstance(name,str) or '\\' in name or ':' in name:raise ValueError('Unsafe package path')
-    if name in FONT_ASSETS:return name
     p=PurePosixPath(name)
     if p.is_absolute() or name!=p.as_posix() or any(part in ('','..','.') or part.endswith((' ','.')) for part in p.parts):raise ValueError('Unsafe package path')
     reserved={'con','prn','aux','nul',*('com'+str(i) for i in range(1,10)),*('lpt'+str(i) for i in range(1,10))}
@@ -112,7 +110,9 @@ def build_package(source,output):
         for path in sorted((source/prefix).rglob('*')):
             if not path.is_file():continue
             name=path.relative_to(source).as_posix()
-            packaged=(name in ({'assets/claude-pet.ico','assets/claude-pet.png','assets/pet-icons/robot.png','assets/pet-icons/charmander.png'}|FONT_ASSETS) or name.startswith(('skins/charmander/','skins/tokito_muichiro/','skins/mung_morning/')))
+            packaged=(name in {'assets/claude-pet.ico','assets/claude-pet.png','assets/pet-icons/robot.png',
+                               'assets/pet-icons/charmander.png','assets/fonts/mung_morning_label.png'}
+                      or name.startswith(('skins/charmander/','skins/tokito_muichiro/','skins/mung_morning/')))
             if not packaged:continue
             try:managed_path(name)
             except ValueError:continue

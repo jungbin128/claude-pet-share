@@ -25,6 +25,7 @@
     ],
     "inset": 5,
     "font_size": 10,
+    "bitmap": "assets/fonts/mung_morning_label.png",
     "text_offset_y": 1,
     "pixel_threshold": 45
   },
