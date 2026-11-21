@@ -1057,7 +1057,10 @@ def pet_sprite(st, eyes, arms, bob, badge, stars, wave, f, skin_key=None, anim=(
     anim: 평소 움직임을 그리는 펫(ANIMATED)에 넘기는 (이름, 값) 묶음 — 숨쉬기·불꽃·꼬리."""
     spr = pixelpet.draw(st, eyes=eyes, arms=arms, bob=bob, badge=badge, stars=stars, wave=wave, **dict(anim))
     _ = skin_key
-    return spr.resize((max(1, round(spr.width * f)), max(1, round(spr.height * f))), Image.NEAREST)
+    spr = spr.resize((max(1, round(spr.width * f)), max(1, round(spr.height * f))), Image.NEAREST)
+    if isinstance(pixelpet, imagepet.ImageSkin) and pixelpet.nameplate:
+        pixelpet.draw_nameplate(spr, f, bob=bob)
+    return spr
 
 
 @functools.lru_cache(maxsize=256)

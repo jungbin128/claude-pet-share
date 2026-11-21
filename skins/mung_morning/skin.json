@@ -1,5 +1,14 @@
 {
   "name": "멍모닝",
+  "nameplate": {
+    "text": "멍모닝",
+    "cover": [350, 897, 700, 1017],
+    "border": [67, 38, 26],
+    "fill": [250, 229, 196],
+    "text_color": [65, 37, 28],
+    "inset": 5,
+    "font_size": 10
+  },
   "cell": 9.3671875,
   "pixel_density": 2,
   "light": [520, 835],

@@ -12,7 +12,7 @@ from collections import Counter
 import fire_rings
 import pixel_finish
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 SKIN_DIR = os.path.join(BASE, "skins")
@@ -154,6 +154,7 @@ class ImageSkin:
         self.fire_rings = bool((conf.get("effects") or {}).get("fire_rings"))
         self.flame_shadow = bool((conf.get("effects") or {}).get("flame_shadow"))
         self._flame_shadows = {}
+        self.nameplate = conf.get("nameplate")
         groups, blink = _frame_files(folder)
         if "idle" not in groups:
             raise FileNotFoundError(f"{folder}: sprite.png 또는 idle_0.png 가 없음")
@@ -178,6 +179,8 @@ class ImageSkin:
         small_art = max(first.size) <= 128
         cell = float(conf.get("cell") or (1.0 if small_art else _cell_size(first.crop(box))))
         flip = bool(conf.get("flip"))
+        self._cell = cell
+        self.flip = flip
 
         def prep(img):
             out = _shrink(img if img.size == first.size else img.resize(first.size, Image.NEAREST), box, cell)
@@ -228,6 +231,54 @@ class ImageSkin:
 
     def effect_token(self, elapsed):
         return int(elapsed * fire_rings.FPS) % fire_rings.PHASES if self.fire_rings else None
+
+    def draw_nameplate(self, image, scale, bob=0):
+        """Re-typeset a tiny baked-in label after nearest-neighbor scaling."""
+        spec = self.nameplate
+        if not spec:
+            return
+        try:
+            x0, y0, x1, y1 = spec["cover"]
+            density = self.pixel_density
+            # cover coordinates are in the original PNG canvas; ImageSkin stores
+            # the frame at one sample per `cell`, with the normal padding added.
+            bx, by, _, _ = self.source_box
+            cell = self._cell
+            coords = [
+                (self.OX + (x0 - bx) / cell) * scale,
+                (self.OY + (y0 - by) / cell - round(bob * density)) * scale,
+                (self.OX + (x1 - bx) / cell) * scale,
+                (self.OY + (y1 - by) / cell - round(bob * density)) * scale,
+            ]
+            if self.flip:
+                width = image.width
+                coords[0], coords[2] = width - coords[2], width - coords[0]
+            d = ImageDraw.Draw(image)
+            border = tuple(spec.get("border", (67, 38, 26))) + (255,)
+            fill = tuple(spec.get("fill", (250, 229, 196))) + (255,)
+            radius = max(1, round(scale * 2))
+            d.rounded_rectangle(tuple(round(v) for v in coords), radius=radius, fill=border)
+            inset = max(1, round(float(spec.get("inset", 5)) / cell * scale))
+            inner = (round(coords[0] + inset), round(coords[1] + inset),
+                     round(coords[2] - inset), round(coords[3] - inset))
+            d.rounded_rectangle(inner, radius=max(1, radius - inset // 2), fill=fill)
+            font_size = max(7, round(float(spec.get("font_size", 10)) * scale))
+            font_path = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", "malgunbd.ttf")
+            font = ImageFont.truetype(font_path, font_size)
+            cx, cy = (coords[0] + coords[2]) / 2, (coords[1] + coords[3]) / 2
+            text_color = tuple(spec.get("text_color", (65, 37, 28))) + (255,)
+            text = spec.get("text", "")
+            stroke = max(1, round(scale * 0.35))
+            max_width = max(1, inner[2] - inner[0] - 2 * stroke)
+            while font_size > 6 and d.textbbox((0, 0), text, font=font, stroke_width=stroke)[2] > max_width:
+                font_size -= 1
+                font = ImageFont.truetype(font_path, font_size)
+            d.text((round(cx), round(cy)), text, font=font,
+                   fill=text_color, anchor="mm", stroke_width=stroke,
+                   stroke_fill=text_color)
+        except (KeyError, TypeError, ValueError, OSError):
+            # A missing system font must not prevent the pet itself from rendering.
+            return
 
     def _pick(self, state, eyes, arms, badge, stars, tick, frame=None):
         group, index = frame or self.frame_token(state, eyes, arms, badge, stars, tick / TICK_HZ)
